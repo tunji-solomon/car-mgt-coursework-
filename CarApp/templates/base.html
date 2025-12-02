@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static '../static/css/boostrap.min.css'%}">
+    <link rel="stylesheet" href="{% static '../static/css/style.css' %}">
+    {% block title %} {% endblock %}
+    {% block custom-style%} {% endblock %}
+</head>
+<body>
+    <div class="logo-navbar-container">
+        <a class="comp-name" href="{% url 'home' %}">MERAC - CAR MANAGEMENT SYSTEM</a>
+        <div class="navbar-container">
+            {% if  not user.is_superuser %}
+            <div class="navbar-items our-services">
+                Our Services
+                <div class="our-service-dropdown">
+                    <a class="link" href="#"><div class="our-service-list">Ventilating</div></a>
+                    <a class="link" href="#"><div class="our-service-list">Hair-Do</div></a>
+                    <a class="link" href="#"><div class="our-service-list">Revamping</div></a>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'add-car' %}"><p class="navbar-items">Add car</p></a>
+                <a href="{% url 'register-customer' %}"><p class="navbar-items">Customer</p></a>
+                <a href="{% url 'create-staff' %}"><p class="navbar-items">Staff</p></a>
+                <a href="{% url 'sell-car' %}"><p class="navbar-items">Sell Car</p></a>
+                <a href="{% url 'create-staff' %}"><p class="navbar-items">Services</p></a>
+                <a href="#"><li class="fa-solid fa-user  navbar-items active-user"></li></a>
+                <a href="{% url 'logout-staff' %}"><p class="navbar-items"><i class="fa-solid fa-arrow-right-from-bracket"></i></p></a>
+                
+            {% endif %}
+        </div>
+    </div>
+    
+    {% block content %}
+    {% endblock %}
+    {% block related-products %}
+    {% endblock %}
+
+    <p class="copyright">© {% now "Y" %} MERAC-AUTOS. All rights reserved.</p>
+    <script src="{% static '../static/js/index.js' %}"></script>
+    <script src="https://kit.fontawesome.com/3df687ad82.js" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

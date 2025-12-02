@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}staff registration-page{% endblock %}
+{% block custom-style%}
+
+{% endblock %}
+{% block content %}
+    <div class="registration-container">
+
+        {% if context %}
+
+            <form method="POST" enctype="multipart/form-data" class="registration-form">
+                {% csrf_token %}
+                <h2 class="registration-form-title">{% block header%}CUSTOMER REGISTRATION{% endblock %}</h2>
+
+                {% if messages %}
+                
+                {% for message in messages %}
+                        {% if "success" in message.tags %}
+                            <p class="messages success">{{message}}</p>
+                        {% elif "required" in messages %} 
+                            <p class="messages">{{message}}</p>
+                        {% endif%}     
+                <input type="text" placeholder="Enter firstname" value={{context.first_name}}  name="firstname" class="registration-field" required>
+                        {% if 'first_name' in message.tags %}
+                            <p class="messages">{{message}}</p>
+                        {% endif %}
+                <input type="text" placeholder="Enter Lastname" value={{context.last_name}}  name="lastname" class="registration-field" required>
+                        {% if 'last_name' in message.tags %}
+                            <p class="messages">{{message}}</p>
+                        {% endif %}
+                <input type="text" placeholder="Enter Address" value={{context.address}} name="address" class="registration-field"  required>
+                <input type="text"  value="Select City" name="city" list="city" class="registration-field"  required>
+                <datalist id="city" class="datalist">
+                    <option value="Glasgow">
+                    <option value="Edinburgh">
+                    <option value="Inverness">
+                    <option value="Aberdeen">
+                    <option value="Perth">
+                    <option value="Dundee">
+                    <option value="Stirling">
+                    
+                </datalist>
+
+                {% if not context.phone %}
+                    <input type="text" placeholder="Enter Phone" name="phone" class="registration-field" required>
+                    {% if 'phone' in message.tags %}
+                        <p class="messages">{{message}}</p>
+                    {% endif %}
+                    
+                {% else %}
+                    <input type="text" placeholder="Enter Phone" value={{context.phone}}  name="phone" class="registration-field" required>
+                    
+                {% endif %}
+
+                {% if not context.email %}
+                    <input type="text" placeholder="Enter Email" name="email" class="registration-field" required>
+                    {% if 'email' in message.tags or 'valid-email' in message.tags %}
+                        <p class="messages">{{message}}</p>
+                    {% endif %} 
+                    
+                {% else %}
+                    <input type="text" placeholder="Enter Email" value={{context.email}}  name="email" class="registration-field" required>
+                    
+                {% endif %}    
+                <input type="text" placeholder="Enter Password" name="password" class="registration-field"  required>
+                        {% if 'pattern' in message.tags %}
+                            <p class="messages">{{message}}</p>
+                        {% endif %}     
+                <input type="text" placeholder="Confirm" name="confirm" class="registration-field" required>
+                        {% if 'mismatch' in message.tags %}
+                            <p class="messages">{{message}}</p>
+                        {% endif %}     
+                <button type="submit" class="registration-field submit-btn register-btn">{% block button %}Complete{% endblock %}</button>
+                    {% endfor %}
+
+                {%endif %}
+
+            </form>
+        {% else %}
+            <form method="POST" action="{% url "register-customer" %}"class="registration-form" >
+                <h2 class="add-product-title">{% block header2 %}CUSTOMER REGISTRATION{% endblock %}</h2>
+                
+                {% csrf_token %} 
+                <input type="text" placeholder="Enter Firstname" name="firstname" class="registration-field" required>
+                <input type="text" placeholder="Enter Lastname" name="lastname" class="registration-field" required>
+                <input type="text" placeholder="Enter Address" name="address" class="registration-field" required>
+
+                <input type="text" placeholder="Select" name="city" list="city" class="registration-field" required>
+                <datalist id="city" class="datalist">
+                    <option value="Glasgow">
+                    <option value="Edinburgh">
+                    <option value="Inverness">
+                    <option value="Aberdeen">
+                    <option value="Perth">
+                    <option value="Dundee">
+                    <option value="Stirling">
+                    
+                </datalist>
+
+                <input type="text" placeholder="Enter Phone" name="phone" class="registration-field" required>
+                <input type="text" placeholder="Enter Email" name="email" class="registration-field" required>
+                
+                <button type="submit" class="registration-field submit-btn register-btn">{% block button2 %}Complete{% endblock %}</button>
+                
+            </form>
+        {% endif %}
+
+        <div class="registration-image"></div>
+
+    </div>
+        
+
+{% endblock %}

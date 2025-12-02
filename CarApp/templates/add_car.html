@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}login-page{% endblock %}
+{% block custom-style%}
+
+ <div class="registration-container">
+
+
+            <form method="POST" action="{% url 'add-car' %}" class="registration-form">
+                {% csrf_token %}
+                <h2 class="add-car-title">{% block header%}ADD CAR{% endblock %}</h2>
+
+                     
+                <input type="text" placeholder="Make"  name="make" class="registration-field" required>
+        
+                <input type="text" placeholder="Model"  name="model" class="registration-field" required>
+                <input type="text" placeholder="Year" name="year" list="year" class="registration-field" required>
+
+                <datalist id="year" class="datalist">
+                    <option value="2025">
+                    <option value="2024">
+                    <option value="2023">
+                    <option value="2022">
+                    <option value="2021">
+                    <option value="2020">
+                    <option value="2019">
+                    <option value="2018">
+                    <option value="2017">
+                    <option value="2016">
+                    <option value="2015">
+                    <option value="2014">
+                    <option value="2013">
+                    <option value="2012">
+                    <option value="2011">
+                    <option value="2010">
+                </datalist>
+
+                <input type="text" placeholder="Colour" name="colour" list="colour" class="registration-field" required>
+                <datalist id="colour" class="datalist">
+                    <option value="Red">
+                    <option value="Blue">
+                    <option value="Grey">
+                    <option value="Yellow">
+                    <option value="Pink">
+                    <option value="Black">
+                    <option value="White">
+                </datalist>
+                <input type="text" placeholder="Mileage"  name="mileage" class="registration-field"  required>
+                <input type="text" placeholder="Transmission" name="transmission" class="registration-field"  required>
+                <input type="text" placeholder="Price"  name="price" class="registration-field"  required>
+                <input type="text" placeholder="Status"  name="status" list="status" class="registration-field"  required>
+                <datalist id="status" class="datalist">
+                    <option value="Available">
+                    <option value="Sold">
+                </datalist>
+
+                <button type="submit" class="registration-field submit-btn register-btn">{% block button2 %}Add Car{% endblock %}</button>
+                
+            </form>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}login-page{% endblock %}
+
+
+{% block custom-style%}
+
+{% endblock %}
+{% block content %}
+    {% if not user.is_authenticated %}
+        <div class="login-container">
+                <form method="POST" action= "{% url 'login-staff'%}"class="login-form" >
+                    {% csrf_token %} 
+                    <h2 class="login-form-title">LOGIN</h2>
+                    <input type="text" placeholder="Enter Lastname" name="username" class="login-field" required>
+                    <input type="text" placeholder="Enter Password" name="password" class="login-field"  required>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p class="messages">{{message}}</p>
+                        {% endfor %}
+                    {% endif %}
+                    <button type="submit" class="login-field submit-btn login-btn">Login</button> 
+                </form>
+        </div>
+    {% else %}
+        <h2 class="cart-header">DASHBOARD</h2>
+        <form method="POST" action="{% url 'dashboard' %}">
+            {% csrf_token %}
+            <div class="pending-search-by-container">
+                {% if search_by %}
+                    <label class="search-by-label">Search by</label><input type="text" value={{search_by}} list="search-by" name="search-by" class="search-by">
+                {% else %}
+                    <label class="search-by-label">Search by</label><input type="text" placeholder="Select query" list="search-by" name="search-by" class="search-by">
+                {%endif%}
+                <datalist id="search-by">
+                    <option value="Cars available for sale">
+                    <option value="Sales by date">
+                    <option value="Sales by staff member">
+                    <option value="Total sales revenue">
+                    <option value="Cars with upcoming services">
+                    <option value="Cars with past services">
+                    <option value="Customer purchase history">
+                </datalist>
+
+                {% if date %}
+                    <input type="date" name="date" value={{date}} class="search-by-date">
+                {% else %}
+                    <input type="date" name="date" class="search-by-date">
+                {% endif %}
+
+                {% if query %}
+                    <input type="text" placeholder="enter customer ID" value={{query}} name="query" class="search-by-others">
+                {% else %}
+                    <input type="text" placeholder="enter customer ID" name="query" class="search-by-others">
+                {% endif %}
+
+                <button class="search-by-button" type="submit">Search</button>
+            </div>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="pending-order-messages">{{message}}</p>
+            {% endfor %}
+        {% endif %}
+        </form>
+
+        {% block query_table %}
+
+            <div class="cart-container pending-orders-container">
+                <div class="cart-column-headers-container">
+                    <p class="cart-column-headers">Sales ID</p>
+                    <p class="cart-column-headers">Car ID</p>
+                    <p class="cart-column-headers">Customer ID</p>
+                    <p class="cart-column-headers">Staff ID</p>
+                    <p class="cart-column-headers">Sales Date</p>
+                    <p class="cart-column-headers">Sales Price</p>
+                    <p class="cart-column-headers">Payment Method</p>
+                </div>
+
+                {% if 'sales_by_date'%}
+                    {% for sale in sales_by_date%}
+                        <div class="cart-items-container">
+                            <div>{{sale.sales_id}}</div>
+                            <div>{{sale.car_id}}</div>
+                            <div>{{sale.Customer_id}}</div>
+                            <div>{{sale.Staff_id}}</div>
+                            <div>{{sale.sales_date}}</div>
+                            <div>{{sale.sales_price}}</div>
+                            <div>{{sale.payment_method}}</div>
+                       
+                        </div>
+                    {% endfor%}
+
+                {% endif %}
+                {% if 'all_sales'%}
+                    {% for sale in all_sales%}
+                        <div class="cart-items-container">
+                            <div>{{sale.sales_id}}</div>
+                            <div>{{sale.car_id}}</div>
+                            <div>{{sale.Customer_id}}</div>
+                            <div>{{sale.Staff_id}}</div>
+                            <div>{{sale.sales_date}}</div>
+                            <div>{{sale.sales_price}}</div>
+                            <div>{{sale.payment_method}}</div>
+                       
+                        </div>
+                    {% endfor%}
+
+                {% endif %}
+
+                {% if 'sales_by_staff' %}
+                    {% for sale in sales_by_date%}
+                        <div class="cart-items-container">
+                            <div>{{sale.sales_id}}</div>
+                            <div>{{sale.car_id}}</div>
+                            <div>{{sale.Customer_id}}</div>
+                            <div>{{sale.Staff_id}}</div>
+                            <div>{{sale.sales_date}}</div>
+                            <div>{{sale.sales_price}}</div>
+                            <div>{{sale.payment_method}}</div>
+                       
+                        </div>
+                    {% endfor%}
+
+                {% endif %}
+            
+            </div>
+
+             
+        {% endblock%}
+
+    {% endif %}
+            
+{% endblock %}
+
