@@ -5,11 +5,6 @@ from django.contrib.auth.models import User
 
 class Car(models.Model):
     
-    STATUS_CHOICES = [
-        ("Available", "Available"),
-        ("Sold", "Sold")
-    ] 
-    
     car_id = models.CharField(primary_key=True, blank=True)
     make = models.CharField(max_length=50, blank=False)
     model = models.CharField(max_length=50, blank=False)
@@ -18,7 +13,7 @@ class Car(models.Model):
     mileage = models.IntegerField(blank=False)
     transmission = models.CharField(max_length=50, blank=False)
     price = models.IntegerField(blank=False)
-    status = models.CharField(choices=STATUS_CHOICES, default="Available")
+    status = models.CharField(default="Available")
     purchase_date = models.DateField(auto_now_add=True)
     
     def save(self, *args, **kwags):
@@ -119,11 +114,11 @@ class Service(models.Model):
     
     service_id = models.CharField(primary_key=True)
     car_id = models.ForeignKey(Car, on_delete=models.CASCADE)
-    staffr_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
     Staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
     service_date = models.DateField(auto_now_add=True)
-    service_type = models.IntegerField(blank=False)
+    service_type = models.CharField(blank=False)
     service_cost = models.IntegerField(blank=False)
+    service_note = models.TextField()
     
     
     def save(self, *args, **kwags):

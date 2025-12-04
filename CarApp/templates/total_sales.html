@@ -1,0 +1,15 @@
+{% extends 'home.html' %}
+{% load static%}
+{% block query_table %}
+
+    <div class="cart-container pending-orders-container">
+        {% if 'total_sales' %}
+            <div class="total-sales-container">
+                <p class="cart-column-headers">TOTAL SALES</p>
+                <p class="cart-column-headers">{{total_sales}}</p>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock%}

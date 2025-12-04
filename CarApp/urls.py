@@ -9,5 +9,6 @@ urlpatterns = [
      path("add_car/", add_car, name="add-car" ),
      path('register_customer/',  register_customer, name="register-customer"),
      path("sell_car/", sell_car, name="sell-car"),
-     path("dashboard/", dashboard, name="dashboard")
+     path("dashboard/", dashboard, name="dashboard"),
+     path("service", service, name="service")
 ]

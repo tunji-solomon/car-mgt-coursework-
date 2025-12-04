@@ -1,0 +1,37 @@
+{% extends 'home.html' %}
+{% load static%}
+{% block query_table %}
+
+    <div class="cart-container pending-orders-container">
+        <div class="avail-cars-headers-container">
+            <p class="cart-column-headers">Car ID</p>
+            <p class="cart-column-headers">Make</p>
+            <p class="cart-column-headers">Model</p>
+            <p class="cart-column-headers">Colour</p>
+            <p class="cart-column-headers">Mileage</p>
+            <p class="cart-column-headers">Transmission</p>
+            <p class="cart-column-headers">Price</p>
+            <p class="cart-column-headers">Status</p>
+            <p class="cart-column-headers">Purchase Date</p>
+            
+        </div>
+
+        {% if 'cars' %}
+            {% for car in cars%}
+                <div class="car-items-container cart-items-container">
+                    <div>{{car.car_id}}</div>
+                    <div>{{car.make}}</div>
+                    <div>{{car.model}}</div>
+                    <div>{{car.colour}}</div>
+                    <div>{{car.mileage}}</div>
+                    <div>{{car.transmission}}</div>
+                    <div>{{car.price}}</div>
+                    <div>{{car.status}}</div>
+                    <div>{{car.purchase_date}}</div>
+                </div>
+            {% endfor%}
+
+        {% endif %}
+    </div>
+
+{% endblock%}

@@ -9,7 +9,14 @@ import re
 
 
 def home(request):
-    return render(request, "home.html")
+    all_sales = Sales.objects.all()
+    context = {
+        "all_sales" : all_sales
+    }
+    print(all_sales, "HERERER")
+    return render(request, "home.html", context)
+    
+   
 
 def create_staff(request):
     password_pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\dA-Za-z]).{8,15}$'
@@ -85,7 +92,7 @@ def login_staff(request):
             return redirect('home')
         else:
             messages.error(request, "Invalid credentials", extra_tags="wrong_credentials")
-    return render(request,'login.html')
+    return render(request,'home.html')
 
 
 def logout_staff(request):
@@ -94,20 +101,26 @@ def logout_staff(request):
 
 def register_customer(request):
     
+     customers = Customer.objects.all()
      email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
      if request.method == "POST":
         first_name = request.POST.get("firstname")
         last_name = request.POST.get("lastname")
         address = request.POST.get("address")
         city = request.POST.get("city")
+        postcode = request.POST.get("postcode")
         phone = request.POST.get("phone")
         email = request.POST.get("email")
+        
+        print(customers, "AT THE TOP")
 
         context = {
+                "customers": customers,
                 "first_name": first_name,
                 "last_name": last_name,
-                "addresse": address,
+                "address": address,
                 "city": city,
+                "postcode": postcode,
                 "phone": phone,
                 "email": email
             }
@@ -121,7 +134,7 @@ def register_customer(request):
                     new_customer = Customer.objects.create(first_name=first_name, last_name=last_name,address=address, city=city, phone=phone, email=email)
                     new_customer.clean_fields()
                     new_customer.save()
-                    return redirect("home")
+                    return redirect("register-customer")
 
               
                 else:
@@ -140,8 +153,9 @@ def register_customer(request):
             del context["phone"]
             return render(request, "customer.html", {"context": context})
         
-        
-     return render(request, "customer.html")
+    
+     customer = Customer.objects.all()  
+     return render(request, "customer.html", {"customers": customer})
     
         
     
@@ -149,7 +163,6 @@ def register_customer(request):
 
 def add_car(request):
     if request.method == "POST":
-        print(request.POST.get("make"))
         car_make = request.POST.get("make")
         car_model = request.POST.get("model")
         car_year = request.POST.get("year")
@@ -157,10 +170,9 @@ def add_car(request):
         car_mileage = request.POST.get("mileage")
         car_transmission = request.POST.get("transmission")
         car_price = request.POST.get("price")
-        car_status = request.POST.get("status")
         
         new_car = Car.objects.create(make=car_make, model=car_model, year=car_year, colour=car_colour,
-                            mileage=car_mileage, transmission=car_transmission, price=car_price, status=car_status)
+                            mileage=car_mileage, transmission=car_transmission, price=car_price)
         
         new_car.clean_fields()
         new_car.save()
@@ -174,9 +186,7 @@ def sell_car(request):
     
     if request.user.is_authenticated:
         if request.method == "POST":
-            print(request.user)
             staff_id = Staff.objects.get(email = request.user.email )
-            print(staff_id, "HERERERER")
             customer_id = request.POST.get("customer_id")
             car_id = request.POST.get("car_id")
             payment_method = request.POST.get("payment_method")
@@ -187,10 +197,12 @@ def sell_car(request):
                 "payment_method": payment_method
             }
             
-            
-            validate_customer_id = Customer.objects.get(customer_id=customer_id)
-            validate_car_id = Car.objects.get(car_id=car_id)
-            print(validate_car_id, "CARRRRRR")
+            try:
+                validate_customer_id = Customer.objects.get(customer_id=customer_id)
+                validate_car_id = Car.objects.get(car_id=car_id)
+            except Exception:
+                messages.info(request, "Customer with ID does not exist", extra_tags="customer")
+                return render(request, "sell_car.html", context)
             
             if validate_customer_id:
                 del context["customer_id"]
@@ -200,7 +212,8 @@ def sell_car(request):
                         sales_price = validate_car_id.price
                 
                 
-                        new_car_sale = Sales.objects.create(car_id=validate_car_id, Customer_id=validate_customer_id, Staff_id=staff_id, sales_price=sales_price, payment_method=payment_method )
+                        new_car_sale = Sales.objects.create(car_id=validate_car_id, Customer_id=validate_customer_id, 
+                                                            Staff_id=staff_id, sales_price=sales_price, payment_method=payment_method )
                         new_car_sale.clean_fields()
                         new_car_sale.save()
                         
@@ -225,17 +238,18 @@ def dashboard(request):
     if request.method == "POST":
         search_by = request.POST.get("search-by")
         date = request.POST.get("date")
-        customer_id = request.POST.get("query")
+        query = request.POST.get("query")
         context = {
             "search_by": search_by,
             "date": None if not date else date,
-            "query": None if not customer_id else customer_id
+            "query": None if not query else query
         }
+        
+        print(search_by, "SEARCH BYYYY")
         
         if search_by == "Cars available for sale":
             available_cars = Car.objects.filter(status="Available")
             context["cars"] = available_cars
-            print(available_cars)
             
             return render(request, "available_car.html",context )
 
@@ -251,21 +265,55 @@ def dashboard(request):
                 messages.info(request, "Date not selected", extra_tags="date")
                 
         if search_by == "Sales by staff member":
-            if date:
-                sales_by_date =Sales.objects.filter(sales_date=date)
-                if sales_by_date:
-                    context["sales_by_date"]= sales_by_date
+            if query:
+                sales_by_staff =Sales.objects.filter(Staff_id=query)
+                if sales_by_staff:
+                    context["sales_by_staff"] = sales_by_staff
                 else:
-                    messages.info(request, "No sales for the above date...")
+                    messages.info(request, "No sales made by the given staff yet...")
                 return render(request, "home.html", context)
             else:
-                messages.info(request, "Date not selected", extra_tags="date")
+                messages.info(request, "Staff ID must be entered", extra_tags="date")
+                return render(request, "home.html", context)
                 
-                
-                
+        if search_by == "Total sales revenue":
+            total_sales = Sales.objects.all()
+            total = 0
+            if total_sales and len(total_sales) > 0:
+                for sales in total_sales:
+                    total += sales.sales_price
+                context["total_sales"] = total
+                return render(request, "total_sales.html", context)
+            else:
+                messages.info(request, "No sales has been made yet", extra_tags="total_sales")
+                return render(request, "home.html", context)                
             
-    all_sales = Sales.objects.all()
-    return render(request, "home.html", {"all_sales": all_sales})
+    
+    return redirect("home")
+
+def service(request):
+    if request.method == "POST":
+        car_id = request.POST.get("car_id")
+        staff_id = request.POST.get("staff_id")
+        service_date = request.POST.get("service_date")
+        service_type = request.POST.get("service_type")
+        service_cost = request.POST.get("service_cost")
+        service_note = request.POST.get("service_note")
+        print(service_note, "servicececececec")
+        
+        car_instance = Car.objects.get(car_id=car_id)
+        staff_instance = Staff.objects.get(staff_id=staff_id)
+        
+        new_service = Service.objects.create(car_id=car_instance, Staff_id=staff_instance, service_date=service_date, service_type=service_type,
+                                             service_cost=service_cost, service_note=service_note)
+        
+        new_service.clean_fields()
+        new_service.save()
+        
+        return redirect("service")
+    
+    return render(request, "service.html")
+   
             
         
         

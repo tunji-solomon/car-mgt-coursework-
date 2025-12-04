@@ -48,10 +48,10 @@ a {
 }
 
 .comp-name {
+    font-family: 'Times New Roman', Times, serif;
     color: rgba(24, 24, 24, 0.807);
     margin-left: 50PX;
     font-weight: bolder;
-    text-decoration: underline;
 }
 .header_title {
     color: white;
@@ -97,7 +97,8 @@ a {
 
 }
 
-.navbar-items {
+.navbar-items,
+.run-query-btn {
     font-family: Arial, Helvetica, sans-serif;
     color: white;
     font-size: 1rem;
@@ -148,17 +149,23 @@ a {
     color: #f7f7f7;
 }
 
+.run-query-btn {
+    padding: 3px;
+    border:2px;
+}
+
 
 .navbar-items:hover,
 .cancel-btn:hover,
-.clear-cart:hover {
+.clear-cart:hover,
+.run-query-btn:hover {
     color: rgba(24, 24, 24, 0.809);
     transition: 0.5s;
     background-color: white;
     border: 0.5px solid;
 }
 
-.navbar-items:active {
+.navbar-items:active{
     color: #f9c0ede5;
     transition: 0.5s;
 }
@@ -647,6 +654,8 @@ a {
     margin: 30px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.225);
     border-radius: 20px;
+    background-color: rgba(74, 74, 74, 0.65);
+    color: #f7f7f7;
 
 }
 
@@ -707,7 +716,9 @@ a {
 
 .cart-column-headers-container,
 .cart-items-container,
-.avail-cars-headers-container {
+.avail-cars-headers-container,
+.customers-headers-container,
+.service-headers-container {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     width: 100%;
@@ -719,9 +730,51 @@ a {
 
 }
 
+.service-text-area {
+    margin-bottom: 20px;
+}
+
+.service-headers-container {
+    grid-template-columns: repeat(6, 1fr);
+    width: 800px;
+}
+
+.cart-column-headers-container,
+.customers-headers-container,
+.service-headers-container {
+    border-bottom: 0.3px solid #f7f7f7
+}
+
+
+.total-sales-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    align-items: center;
+    padding: 10px 0px;
+}
+
 .avail-cars-headers-container,
 .car-items-container{
     grid-template-columns: repeat(9, 1fr);
+}
+
+.customer-container {
+    margin-top: 170px;
+    margin-left: 100px;
+    height: fit-content;
+    padding-bottom: 50px;
+}
+
+.customer-items-container {
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.customers-headers-container {
+    grid-template-columns: repeat(7, 1fr);
+    padding-left: 10px;
 }
 
 .grid-4 {

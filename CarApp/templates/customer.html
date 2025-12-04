@@ -29,7 +29,7 @@
                         {% if 'last_name' in message.tags %}
                             <p class="messages">{{message}}</p>
                         {% endif %}
-                <input type="text" placeholder="Enter Address" value={{context.address}} name="address" class="registration-field"  required>
+                <input type="text" placeholder="Enter Address" value="{{context.address}}" name="address" class="registration-field"  required>
                 <input type="text"  value="Select City" name="city" list="city" class="registration-field"  required>
                 <datalist id="city" class="datalist">
                     <option value="Glasgow">
@@ -62,15 +62,7 @@
                 {% else %}
                     <input type="text" placeholder="Enter Email" value={{context.email}}  name="email" class="registration-field" required>
                     
-                {% endif %}    
-                <input type="text" placeholder="Enter Password" name="password" class="registration-field"  required>
-                        {% if 'pattern' in message.tags %}
-                            <p class="messages">{{message}}</p>
-                        {% endif %}     
-                <input type="text" placeholder="Confirm" name="confirm" class="registration-field" required>
-                        {% if 'mismatch' in message.tags %}
-                            <p class="messages">{{message}}</p>
-                        {% endif %}     
+                {% endif %}         
                 <button type="submit" class="registration-field submit-btn register-btn">{% block button %}Complete{% endblock %}</button>
                     {% endfor %}
 
@@ -106,9 +98,35 @@
             </form>
         {% endif %}
 
-        <div class="registration-image"></div>
 
-    </div>
-        
+        <div class="cart-container pending-orders-container customer-container">
+            <div class="customers-headers-container">
+                <p class="cart-column-headers">Customer ID</p>
+                <p class="cart-column-headers">First Name</p>
+                <p class="cart-column-headers">Last Name</p>
+                <p class="cart-column-headers">Address</p>
+                <p class="cart-column-headers">City</p>
+                <p class="cart-column-headers">Phone</p>
+                <p class="cart-column-headers">Email</p>                
+            </div>
+
+            {% if 'customers' %}
+                {% for customer in customers %}
+                    <div class="car-items-container cart-items-container customer-items-container">
+                        <div>{{customer.customer_id}}</div>
+                        <div>{{customer.first_name}}</div>
+                        <div>{{customer.last_name}}</div>
+                        <div>{{customer.address}}</div>
+                        <div>{{customer.city}}</div>
+                        <div>{{customer.phone}}</div>
+                        <div>{{customer.email}}</div>
+                    </div>
+                {% endfor%}
+
+            {% endif %}
+
+        </div>
+
+    </div>      
 
 {% endblock %}
