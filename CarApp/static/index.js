@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "Routine maintenance service": 150,
             "Break service": 120,
             "Engine diagonistic": 200,
-            "Suspension and wheel allignments": 180
+            "Wheel allignments": 180
         };
 
         serviceInput.addEventListener("input", function () {

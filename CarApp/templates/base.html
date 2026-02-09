@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="{% static '../static/css/style.css' %}">
     <link rel="stylesheet" href="{% static '../static/js/index.js' %}">
     {% block title %} {% endblock %}
-    {% block custom-style%} {% endblock %}
+    {% block custom-style%}
+    {% endblock %}
 </head>
 <body>
     <div class="logo-navbar-container">
@@ -32,13 +33,8 @@
     
     {% block content %}
     {% endblock %}
-    {% block related-products %}
-    {% endblock %}
-
     <p class="copyright">© {% now "Y" %} MERAC-AUTOS. All rights reserved.</p>
     <script src="{% static '../static/index.js' %}"></script>
     <script src="https://kit.fontawesome.com/3df687ad82.js" crossorigin="anonymous"></script>
-
-
 </body>
 </html>

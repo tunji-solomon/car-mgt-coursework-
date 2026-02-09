@@ -19,7 +19,7 @@
                     <input type="text" placeholder="Select Paymentmethod" list="payment" name="payment_method" class="registration-field" required>
                     <datalist id="payment" class="datalist">
                         <option value="Cash">
-                        <option value="Transfer">
+                        <option value="Card">
                     </datalist>
                     <button class="registration-field submit-btn register-btn" type="submit">SELL</button>
 
@@ -29,6 +29,10 @@
                 {% endfor %}
             {% endif %}
             </form>
+
+            {% comment %} <div class="service-img" style="background-image: url({% static "../static/images/sale.webp" %})"></div> {% endcomment %}
+
         </div>
+
             
 {% endblock %}

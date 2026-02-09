@@ -12,7 +12,7 @@
                 <form method="POST" action= "{% url 'login-staff'%}"class="login-form" >
                     {% csrf_token %} 
                     <h2 class="login-form-title">LOGIN</h2>
-                    <input type="text" placeholder="Enter Lastname" name="username" class="login-field" required>
+                    <input type="text" placeholder="Enter Username" name="username" class="login-field" required>
                     <input type="text" placeholder="Enter Password" name="password" class="login-field"  required>
                     {% if messages %}
                         {% for message in messages %}
@@ -67,73 +67,150 @@
 
 
             <div class="cart-container pending-orders-container">
-                    {% if not total_sales %}
-                        <div class="cart-column-headers-container">
-                            <p class="cart-column-headers">Sales ID</p>
-                            <p class="cart-column-headers">Car ID</p>
-                            <p class="cart-column-headers">Customer ID</p>
-                            <p class="cart-column-headers">Staff ID</p>
-                            <p class="cart-column-headers">Sales Date</p>
-                            <p class="cart-column-headers">Sales Price</p>
-                            <p class="cart-column-headers">Payment Method</p>
-                        </div>
-                    {% endif %}
-
-                    {% if 'all_sales'%}
-                        {% for sale in all_sales %}
-                            <div class="cart-items-container">
-                                <div>{{sale.sales_id}}</div>
-                                <div>{{sale.car_id}}</div>
-                                <div>{{sale.Customer_id}}</div>
-                                <div>{{sale.Staff_id}}</div>
-                                <div>{{sale.sales_date}}</div>
-                                <div>{{sale.sales_price}}</div>
-                                <div>{{sale.payment_method}}</div>
-                        
+      
+  
+                        {% if not total_sales and not past and not upcoming %}
+                            <div class="cart-column-headers-container">
+                                <p class="cart-column-headers">Sales ID</p>
+                                <p class="cart-column-headers">Car ID</p>
+                                <p class="cart-column-headers">Customer ID</p>
+                                <p class="cart-column-headers">Staff ID</p>
+                                <p class="cart-column-headers">Sales Date</p>
+                                <p class="cart-column-headers">Sales Price(&pound)</p>
+                                <p class="cart-column-headers">Payment Method</p>
                             </div>
-                        {% endfor%}
-
-                    {% endif %}
-
-
-                    {% if 'sales_by_date'%}
-                        {% for sale in sales_by_date%}
-                            <div class="cart-items-container">
-                                <div>{{sale.sales_id}}</div>
-                                <div>{{sale.car_id}}</div>
-                                <div>{{sale.Customer_id}}</div>
-                                <div>{{sale.Staff_id}}</div>
-                                <div>{{sale.sales_date}}</div>
-                                <div>{{sale.sales_price}}</div>
-                                <div>{{sale.payment_method}}</div>
-                        
+                        {% elif past or upcoming %}
+                            <div class="service-home-headers-container">
+                                <p class="cart-column-headers">Service ID</p>
+                                <p class="cart-column-headers">Car ID</p>
+                                <p class="cart-column-headers">Staff ID</p>
+                                <p class="cart-column-headers">Date</p>
+                                <p class="cart-column-headers">Type</p>
+                                <p class="cart-column-headers">Cost</p>
                             </div>
-                        {% endfor%}
+                        {% endif %}
 
-                    {% endif %}
+                        {% if 'all_sales'%}
+                            {% for sale in all_sales %}
+                                <div class="cart-items-container">
+                                    <div>{{sale.sales_id}}</div>
+                                    <div>{{sale.car_id}}</div>
+                                    <div>{{sale.customer_id}}</div>
+                                    <div>{{sale.staff_id}}</div>
+                                    <div>{{sale.sales_date}}</div>
+                                    <div>{{sale.sales_price}}</div>
+                                    <div>{{sale.payment_method}}</div>
+                            
+                                </div>
+                            {% endfor%}
+                            {% if counter == 4 %}
+                                <div class="cart-items-container"></div>
+                            {% endif %}
+                            {% if counter == 3 %}
+                                <div class="cart-items-container"></div>
+                                <div class="cart-items-container"></div>
+                            {% endif %}
+                            {% if counter == 2 %}
+                                <div class="cart-items-container"></div>
+                                <div class="cart-items-container"></div>
+                                <div class="cart-items-container"></div>
+                            {% endif %}
+                            {% if counter == 1 %}
+                                <div class="cart-items-container"></div>
+                                <div class="cart-items-container"></div>
+                                <div class="cart-items-container"></div>
+                                <div class="cart-items-container"></div>
+                            {% endif %}
 
-                    {% if 'sales_by_staff' %}
-                        {% for sale in sales_by_staff %}
-                            <div class="cart-items-container">
-                                <div>{{sale.sales_id}}</div>
-                                <div>{{sale.car_id}}</div>
-                                <div>{{sale.Customer_id}}</div>
-                                <div>{{sale.Staff_id}}</div>
-                                <div>{{sale.sales_date}}</div>
-                                <div>{{sale.sales_price}}</div>
-                                <div>{{sale.payment_method}}</div>
-                        
-                            </div>
-                        {% endfor%}
+                        {% endif %}
 
-                    {% endif %}
+                        {% if 'customer_purchases'%}
+                            {% for sale in customer_purchases %}
+                                <div class="cart-items-container">
+                                    <div>{{sale.sales_id}}</div>
+                                    <div>{{sale.car_id}}</div>
+                                    <div>{{sale.customer_id}}</div>
+                                    <div>{{sale.staff_id}}</div>
+                                    <div>{{sale.sales_date}}</div>
+                                    <div>{{sale.sales_price}}</div>
+                                    <div>{{sale.payment_method}}</div>
+                            
+                                </div>
+                            {% endfor%}
+
+                        {% endif %}
+
+                        {% if 'sales_by_date'%}
+                            {% for sale in sales_by_date%}
+                                <div class="cart-items-container">
+                                    <div>{{sale.sales_id}}</div>
+                                    <div>{{sale.car_id}}</div>
+                                    <div>{{sale.customer_id}}</div>
+                                    <div>{{sale.staff_id}}</div>
+                                    <div>{{sale.sales_date}}</div>
+                                    <div>{{sale.sales_price}}</div>
+                                    <div>{{sale.payment_method}}</div>
+                            
+                                </div>
+                            {% endfor%}
+
+                        {% endif %}
+
+                        {% if 'sales_by_staff' %}
+                            {% for sale in sales_by_staff %}
+                                <div class="cart-items-container">
+                                    <div>{{sale.sales_id}}</div>
+                                    <div>{{sale.car_id}}</div>
+                                    <div>{{sale.customer_id}}</div>
+                                    <div>{{sale.staff_id}}</div>
+                                    <div>{{sale.sales_date}}</div>
+                                    <div>{{sale.sales_price}}</div>
+                                    <div>{{sale.payment_method}}</div>
+                            
+                                </div>
+                            {% endfor%}
+
+                        {% endif %}
+                        {% if 'past' %}
+                            {% for service in past %}
+                                <div class="car-items-container cart-items-container service-items-container">
+                                    <div>{{service.service_id}}</div>
+                                    <div>{{service.car_id}}</div>
+                                    <div>{{service.staff_id}}</div>
+                                    <div>{{service.service_date}}</div>
+                                    <div>{{service.service_type}}</div>
+                                    <div>{{service.service_cost}}</div>
+                                </div>
+                            {% endfor%}
+                        {% endif  %}
+                        {% if 'upcoming' %}
+                            {% for service in upcoming %}
+                                <div class="car-items-container cart-items-container service-items-container">
+                                    <div>{{service.service_id}}</div>
+                                    <div>{{service.car_id}}</div>
+                                    <div>{{service.staff_id}}</div>
+                                    <div>{{service.service_date}}</div>
+                                    <div>{{service.service_type}}</div>
+                                    <div>{{service.service_cost}}</div>
+                                </div>
+                            {% endfor%}
+                        {% endif %} 
             
             </div>
-
-             
+            {% if all_sales %}
+                <div class="pagination">
+                    {% if all_sales.has_previous %}
+                        <a href="?page={{ all_sales.previous_page_number }} " class="pagination-control">Previous</a>
+                    {% endif %}
+                    {% if all_sales %}
+                    <span> {{ all_sales.number }} of {{ all_sales.paginator.num_pages }} </span>
+                    {% endif %}
+                    {% if all_sales.has_next %}
+                        <a href="?page={{ all_sales.next_page_number }}" class="pagination-control">Next</a>
+                    {% endif %}
+                </div>
+            {% endif %}    
         {% endblock%}
-
-    {% endif %}
-            
+    {% endif %}           
 {% endblock %}
 

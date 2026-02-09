@@ -5,14 +5,14 @@ from django.contrib.auth.models import User
 
 class Car(models.Model):
     
-    car_id = models.CharField(primary_key=True, blank=True)
-    make = models.CharField(max_length=50, blank=False)
-    model = models.CharField(max_length=50, blank=False)
+    car_id = models.CharField(primary_key=True, blank=False, max_length=10)
+    make = models.CharField(max_length=30, blank=False)
+    model = models.CharField(max_length=20, blank=False)
     year = models.IntegerField(blank=False)
-    colour = models.CharField(blank=False, max_length=50)
+    colour = models.CharField(blank=False, max_length=20)
     mileage = models.IntegerField(blank=False)
-    transmission = models.CharField(max_length=50, blank=False)
-    price = models.IntegerField(blank=False)
+    transmission = models.CharField(blank=False)
+    price = models.FloatField(blank=False)
     status = models.CharField(default="Available")
     purchase_date = models.DateField(auto_now_add=True)
     
@@ -38,12 +38,12 @@ class Staff(models.Model):
         ("services", "Services")
     ]
 
-    staff_id = models.CharField(primary_key=True)
+    staff_id = models.CharField(primary_key=True, max_length=10, unique=True, blank=False)
     user = models.OneToOneField(User, blank=False, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
-    job_title = models.CharField(choices=JOB_TYPES)
-    phone = models.CharField(blank=False, unique=True)
+    job_title = models.CharField(choices=JOB_TYPES, max_length=50)
+    phone = models.CharField(blank=False, max_length=20)
     email = models.EmailField(blank=False, unique=True)
     password = models.CharField(blank=False)
     
@@ -64,13 +64,13 @@ class Staff(models.Model):
     
 class Customer(models.Model):
     
-    customer_id = models.CharField(primary_key=True, blank=True)
+    customer_id = models.CharField(primary_key=True, blank=False)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
-    address = models.CharField(max_length=100, blank=False)
-    city = models.CharField(max_length=100, blank=False)
-    phone = models.CharField(max_length=15, blank=False)
-    email = models.EmailField(blank=False, unique=True)
+    address = models.CharField(max_length=50, blank=False)
+    city = models.CharField(max_length=50, blank=False)
+    phone = models.CharField(max_length=20, blank=False)
+    email = models.EmailField(blank=False, unique=True, max_length=50)
     
     def save(self, *args, **kwags):
         if not self.customer_id:
@@ -88,13 +88,13 @@ class Customer(models.Model):
         
 class Sales(models.Model):
     
-    sales_id = models.CharField(primary_key=True)
-    car_id = models.ForeignKey(Car, on_delete=models.CASCADE)
-    Customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    Staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    sales_id = models.CharField(primary_key=True, unique=True, blank=False)
+    car_id = models.ForeignKey(Car, on_delete=models.CASCADE, blank=False)
+    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, blank=False)
+    staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE, blank=False)
     sales_date = models.DateField(auto_now_add=True)
-    sales_price = models.IntegerField(blank=False)
-    payment_method = models.CharField(max_length=50, blank=False)
+    sales_price = models.FloatField(blank=False)
+    payment_method = models.CharField(max_length=20, blank=False)
     
     
     
@@ -114,11 +114,11 @@ class Service(models.Model):
     
     service_id = models.CharField(primary_key=True)
     car_id = models.ForeignKey(Car, on_delete=models.CASCADE)
-    Staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
-    service_date = models.DateField(auto_now_add=True)
-    service_type = models.CharField(blank=False)
-    service_cost = models.IntegerField(blank=False)
-    service_note = models.TextField()
+    staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    service_date = models.DateField(blank=False)
+    service_type = models.CharField(blank=False, max_length=30)
+    service_cost = models.FloatField(blank=False)
+    service_note = models.TextField(max_length=100)
     
     
     def save(self, *args, **kwags):

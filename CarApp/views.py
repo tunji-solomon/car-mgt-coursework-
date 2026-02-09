@@ -4,16 +4,35 @@ from django.contrib.auth import login, logout, authenticate
 from .models import *
 from django.contrib import messages
 import re
+import datetime
+from django.core.paginator import Paginator
 
 # Create your views here.
 
+saved_paginated_sales = None
 
-def home(request):
-    all_sales = Sales.objects.all()
-    context = {
-        "all_sales" : all_sales
-    }
-    print(all_sales, "HERERER")
+def home(request, page=None):
+    global saved_paginated_sales
+    
+    
+    if request.method == "POST":
+        dashboard(request)
+    else:
+        page = request.GET.get("page")
+    
+        if not page:
+            saved_paginated_sales = Sales.objects.all()
+            
+        paginated_sales = Paginator(saved_paginated_sales.order_by("sales_date"), 5)
+        sales_pages = paginated_sales.get_page(page)
+        all_sales = sales_pages
+        counter = len(all_sales)
+        print(counter)
+
+        context = {
+            "all_sales" : all_sales,
+            "counter" : counter
+        }
     return render(request, "home.html", context)
     
    
@@ -29,7 +48,6 @@ def create_staff(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
         confirm = request.POST.get("confirm")
-        print(first_name, last_name, job_title)
         context = {
                 "first_name": first_name,
                 "last_name": last_name,
@@ -58,8 +76,6 @@ def create_staff(request):
                             messages.info(request, "Password does not match the required pattern", extra_tags= "pattern")
                             return render(request, "create_staff.html", {"context": context})
                     else:
-                        print("confirm password does not match")
-                        print(context)
                         messages.info(request, "Password and confirm password mismatch", extra_tags= "mismatch")
                         return render(request, "create_staff.html", {"context":context})
                 else:
@@ -73,7 +89,6 @@ def create_staff(request):
                 return render(request, "create_staff.html", {"context": context})
 
         else:
-            print("user with phone already exist")
             messages.info(request, "User with phone already exist", extra_tags= "phone")
             del context["phone"]
             return render(request, "create_staff.html", {"context": context})
@@ -112,8 +127,6 @@ def register_customer(request):
         phone = request.POST.get("phone")
         email = request.POST.get("email")
         
-        print(customers, "AT THE TOP")
-
         context = {
                 "customers": customers,
                 "first_name": first_name,
@@ -212,8 +225,8 @@ def sell_car(request):
                         sales_price = validate_car_id.price
                 
                 
-                        new_car_sale = Sales.objects.create(car_id=validate_car_id, Customer_id=validate_customer_id, 
-                                                            Staff_id=staff_id, sales_price=sales_price, payment_method=payment_method )
+                        new_car_sale = Sales.objects.create(car_id=validate_car_id, customer_id=validate_customer_id, 
+                                                            staff_id=staff_id, sales_price=sales_price, payment_method=payment_method )
                         new_car_sale.clean_fields()
                         new_car_sale.save()
                         
@@ -245,7 +258,6 @@ def dashboard(request):
             "query": None if not query else query
         }
         
-        print(search_by, "SEARCH BYYYY")
         
         if search_by == "Cars available for sale":
             available_cars = Car.objects.filter(status="Available")
@@ -266,7 +278,7 @@ def dashboard(request):
                 
         if search_by == "Sales by staff member":
             if query:
-                sales_by_staff =Sales.objects.filter(Staff_id=query)
+                sales_by_staff =Sales.objects.filter(staff_id=query)
                 if sales_by_staff:
                     context["sales_by_staff"] = sales_by_staff
                 else:
@@ -288,6 +300,31 @@ def dashboard(request):
                 messages.info(request, "No sales has been made yet", extra_tags="total_sales")
                 return render(request, "home.html", context)                
             
+        if search_by == "Cars with upcoming services":
+            today = datetime.date.today()
+            
+            cars_for_service = Service.objects.filter(service_date__gt=today)
+            context["upcoming"] = cars_for_service
+            return render(request, "home.html", context )
+        
+        if search_by == "Cars with past services":
+            today = datetime.date.today()
+            
+            past_service = Service.objects.filter(service_date__lt=today)
+            context["past"] = past_service
+            return render(request, "home.html", context )
+        
+        if search_by == "Customer purchase history":
+            if query:
+                purchase_by_customer = Sales.objects.filter(customer_id=query)
+                if purchase_by_customer:
+                    context["customer_purchases"] = purchase_by_customer
+                else:
+                    messages.info(request, "No purchase made by the customer yet...")
+                return render(request, "home.html", context)
+            else:
+                messages.info(request, "Customer ID must be entered", extra_tags="date")
+                return render(request, "home.html", context)
     
     return redirect("home")
 
@@ -299,20 +336,19 @@ def service(request):
         service_type = request.POST.get("service_type")
         service_cost = request.POST.get("service_cost")
         service_note = request.POST.get("service_note")
-        print(service_note, "servicececececec")
         
         car_instance = Car.objects.get(car_id=car_id)
         staff_instance = Staff.objects.get(staff_id=staff_id)
         
-        new_service = Service.objects.create(car_id=car_instance, Staff_id=staff_instance, service_date=service_date, service_type=service_type,
+        new_service = Service.objects.create(car_id=car_instance, staff_id=staff_instance, service_date=service_date, service_type=service_type,
                                              service_cost=service_cost, service_note=service_note)
         
         new_service.clean_fields()
         new_service.save()
         
         return redirect("service")
-    
-    return render(request, "service.html")
+    all_service = Service.objects.all()
+    return render(request, "service.html", {"all_service": all_service})
    
             
         

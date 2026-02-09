@@ -3,12 +3,19 @@
 }
 
 body {
+    height: 100%;
+    width: 100%;
     padding: 0;
-    margin: 0;
+    margin: 0px;
     background-color: #f7f7f7;
     padding-top: 80px;
+    background-image: url('../images/home.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
     position: relative;
 }
+
 
 a {
     text-decoration: none;
@@ -387,9 +394,10 @@ a {
 }
 
 .pagination {
-    display: block;
+    text-align: center ;
     margin-bottom: 50px;
     font-family: Arial, Helvetica, sans-serif;
+    color: #f7f7f7;
 
 }
 .order-history-paginated{
@@ -404,20 +412,31 @@ a {
 .copyright {
     justify-self: center;
     margin: 100px 0px;
+    color: #f7f7f7;
 }
 
 .sell-car-container {
     height: 300px;
-    margin-top: 50px;
+    margin-top: none;
 }
 
 .car-sell-header {
-    margin-top: 100px;
     text-align: center;
 }
 
 .add-car-title {
     margin-top: 0px;
+}
+
+.service-img,
+.staff-img {
+    margin-top: 200px;
+    margin-right: 20px;
+    width: 80%;
+    height: 400px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 
@@ -448,7 +467,8 @@ a {
     align-items: center;
     justify-items: center;
     padding: 50px;
-    background-color: #f7f7f7;
+    background-color:none;
+    color: #f7f7f7;
 }
 
 .add-product-field,
@@ -461,6 +481,8 @@ a {
     border-radius: 20px;
     border: none;
     box-shadow: 0px 0px 1px 0.2px;
+    background-color: rgba(74, 74, 74, 0.65);
+    color: #f7f7f7;
 }
 
 .login-form,
@@ -637,6 +659,7 @@ a {
     text-align: center;
     margin-top: 100px;
     font-family: Arial, Helvetica, sans-serif;
+    color: #f7f7f7;
 }
 
 .cart-empty-message {
@@ -718,7 +741,8 @@ a {
 .cart-items-container,
 .avail-cars-headers-container,
 .customers-headers-container,
-.service-headers-container {
+.service-headers-container,
+.service-home-headers-container {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     width: 100%;
@@ -730,6 +754,7 @@ a {
 
 }
 
+
 .service-text-area {
     margin-bottom: 20px;
 }
@@ -737,6 +762,10 @@ a {
 .service-headers-container {
     grid-template-columns: repeat(6, 1fr);
     width: 800px;
+}
+
+.service-home-headers-container {
+    grid-template-columns: repeat(6, 1fr);
 }
 
 .cart-column-headers-container,
@@ -891,7 +920,7 @@ a {
 .clear-cart:hover{
     background-color: #f7f7f7;
     color: rgb(63, 62, 62);
-
+    
 }
 .related-product-header{
     text-align: center;
@@ -911,7 +940,7 @@ a {
     scrollbar-width: none;
     margin-top: 20px;
     margin-bottom: 100px;
-
+    
 }
 
 .few-products-container::-webkit-scrollbar {
@@ -971,7 +1000,10 @@ a {
     font-family: Arial, Helvetica, sans-serif;
     color: rgba(0, 0, 0, 0.794);
     margin-left: 50px;
-
+    
+}
+.service-items-container {
+    grid-template-columns: repeat(6, 1fr);
 }
 
 .payment-details {

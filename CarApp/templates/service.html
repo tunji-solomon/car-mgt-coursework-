@@ -21,7 +21,7 @@
                     <option value="Routine maintenance service">
                     <option value="Break service">
                     <option value="Engine diagonistic">
-                    <option value="Suspension and wheel allignments">
+                    <option value="Wheel allignments">
                 </datalist>
                 <input type="text" placeholder="Service Cost" name="service_cost" class="search-by-date service-cost registration-field">
                 <br>
@@ -30,6 +30,8 @@
                 <button type="submit" class="registration-field submit-btn register-btn">{% block button %}BOOK NOW{% endblock %}</button>
             </form>
 
+            {% comment %} <div class="service-img" style="background-image: url({% static "../static/images/service.webp" %})"></div> {% endcomment %}
+{% comment %} 
             <div class="cart-container pending-orders-container customer-container">
                 <div class="service-headers-container">
                     <p class="cart-column-headers">Service ID</p>
@@ -37,25 +39,24 @@
                     <p class="cart-column-headers">Staff ID</p>
                     <p class="cart-column-headers">Date</p>
                     <p class="cart-column-headers">Type</p>
-                    <p class="cart-column-headers">Cost</p>
+                    <p class="cart-column-headers">Cost(&pound)</p>
                 </div>
 
-                {% if 'customers' %}
-                    {% for customer in customers %}
-                        <div class="car-items-container cart-items-container customer-items-container">
-                            <div>{{customer.customer_id}}</div>
-                            <div>{{customer.first_name}}</div>
-                            <div>{{customer.last_name}}</div>
-                            <div>{{customer.address}}</div>
-                            <div>{{customer.city}}</div>
-                            <div>{{customer.phone}}</div>
-                            <div>{{customer.email}}</div>
+                {% if 'all_service' %}
+                    {% for service in all_service %}
+                        <div class="car-items-container cart-items-container service-items-container">
+                            <div>{{service.service_id}}</div>
+                            <div>{{service.car_id}}</div>
+                            <div>{{service.staff_id}}</div>
+                            <div>{{service.service_date}}</div>
+                            <div>{{service.service_type}}</div>
+                            <div>{{service.service_cost}}</div>
                         </div>
                     {% endfor%}
 
                 {% endif %}
 
-            </div>
+            </div> {% endcomment %}
 
     </div>
         
