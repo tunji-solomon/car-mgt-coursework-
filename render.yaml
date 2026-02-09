@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: car-app
+    env: python
+    buildCommand: ./build.sh
+    startCommand: gunicorn CarNow.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: CarNow.settings
