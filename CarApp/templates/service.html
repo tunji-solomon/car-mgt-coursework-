@@ -15,7 +15,7 @@
         
                 <input type="text" placeholder="Enter Staff ID" name="staff_id" class="registration-field" required>
     
-                <div style="display: flex;"><p>Service Date</p><input type="date" name="service_date" class="search-by-date"></div>
+                <div style="display: flex;"><p>Service Date</p><label class="calendar-wrapper"><input type="date" id="myDate" /><span class="calendar-icon">&#128197;</span></label></div>
                 <input type="text" placeholder="Select service type" name="service_type" list="job_type" class="registration-field" id="service-cost" required>
                 <datalist id="job_type" class="datalist">
                     <option value="Routine maintenance service">
@@ -23,7 +23,7 @@
                     <option value="Engine diagonistic">
                     <option value="Wheel allignments">
                 </datalist>
-                <input type="text" placeholder="Service Cost" name="service_cost" class="search-by-date service-cost registration-field">
+                <input type="text" placeholder="Service Cost" name="service_cost" class="service-cost registration-field">
                 <br>
                 <textarea rows="4" cols="50" name="service_note" placeholder="Leave a note here" class="registration-field service-text-area"></textarea>
                 <br>

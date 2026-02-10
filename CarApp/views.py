@@ -27,7 +27,6 @@ def home(request, page=None):
         sales_pages = paginated_sales.get_page(page)
         all_sales = sales_pages
         counter = len(all_sales)
-        print(counter)
 
         context = {
             "all_sales" : all_sales,

@@ -46,7 +46,11 @@
                     <option value="White">
                 </datalist>
                 <input type="text" placeholder="Mileage"  name="mileage" class="registration-field"  required>
-                <input type="text" placeholder="Transmission" name="transmission" class="registration-field"  required>
+                <input type="text" placeholder="Transmission" list="transmission"name="transmission" class="registration-field"  required>
+                <datalist id="transmission">
+                    <option value="Automatic">
+                    <option value="Manual">
+                </datalist>
                 <input type="text" placeholder="Price"  name="price" class="registration-field"  required>
 
                 <button type="submit" class="registration-field submit-btn register-btn">{% block button2 %}Add Car{% endblock %}</button>

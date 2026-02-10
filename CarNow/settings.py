@@ -89,7 +89,9 @@ DATABASES = {
         'PORT': os.getenv("DB_PORT"),
         'PASSWORD': os.getenv("DB_PASSWORD")
         
-    } if os.getenv("ENV") == "development" else dj_database_url.config(
+    }
+    # "default" : dj_database_url.config(default="postgresql://car_mgt_db_user:mp9bOX8Mj4jEsUFDFBevJQweKdZ2jFFA@dpg-d651qsm3li6c73di06ig-a.oregon-postgres.render.com/car_mgt_db")
+    if os.getenv("ENV") == "development" else dj_database_url.config(
         default=os.getenv("DATABASE_URL")
     )
 }

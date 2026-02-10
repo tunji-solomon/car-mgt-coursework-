@@ -439,6 +439,29 @@ a {
     background-repeat: no-repeat;
 }
 
+/* Hide the actual input but keep it focusable */
+.calendar-wrapper input[type="date"] {
+    opacity: 0;       /* hide the input box */
+    position: absolute;
+    width: 20px;      /* same as icon width */
+    height: 20px;     /* same as icon height */
+    cursor: pointer;
+}
+
+/* Show a visible calendar icon */
+.calendar-wrapper .calendar-icon {
+    display: inline-block;
+    font-size: 20px;      /* icon size */
+    cursor: pointer;
+}
+
+/* Clicking the icon triggers the hidden input */
+.calendar-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+
 
 /* Add product section */
 .add-product-title,
@@ -773,6 +796,11 @@ a {
 .service-headers-container {
     border-bottom: 0.3px solid #f7f7f7
 }
+
+/* .cart-column-headers-container{
+    background-color: #2d2d2d;
+    margin-top: 0px;
+} */
 
 
 .total-sales-container {
